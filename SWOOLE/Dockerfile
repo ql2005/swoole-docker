@@ -13,8 +13,8 @@ RUN apt-get update && apt-get install -y \
 	iproute2 \
 	supervisor \
 	libfreetype6-dev \
-    libjpeg-dev \
-    libpng-dev \
+	libjpeg-dev \
+	libpng-dev \
 	--no-install-recommends \
 	&& docker-php-ext-install zip opcache bcmath pdo_mysql gd\
 	&& cd /home && rm -rf temp && mkdir temp && cd temp \
