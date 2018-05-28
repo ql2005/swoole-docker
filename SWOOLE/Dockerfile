@@ -12,8 +12,11 @@ RUN apt-get update && apt-get install -y \
 	make \
 	iproute2 \
 	supervisor \
+	libfreetype6-dev \
+    libjpeg-dev \
+    libpng-dev \
 	--no-install-recommends \
-	&& docker-php-ext-install zip opcache bcmath pdo_mysql \
+	&& docker-php-ext-install zip opcache bcmath pdo_mysql gd\
 	&& cd /home && rm -rf temp && mkdir temp && cd temp \
 	&& wget https://github.com/swoole/swoole-src/archive/v2.1.1.tar.gz \
 	https://github.com/redis/hiredis/archive/v0.13.3.tar.gz \
