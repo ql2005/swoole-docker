@@ -18,22 +18,22 @@ RUN apt-get update && apt-get install -y \
 	--no-install-recommends \
 	&& docker-php-ext-install zip opcache bcmath pdo_mysql gd \
 	&& cd /home && rm -rf temp && mkdir temp && cd temp \
-	&& wget https://github.com/swoole/swoole-src/archive/v4.0.0-beta.tar.gz \
+#	&& wget https://github.com/swoole/swoole-src/archive/v4.0.0-beta.tar.gz \
 	&& wget https://github.com/redis/hiredis/archive/v0.13.3.tar.gz \
 	https://github.com/phpredis/phpredis/archive/3.1.3.tar.gz \
 	https://github.com/arnaud-lb/php-inotify/archive/2.0.0.tar.gz \
 	https://github.com/php-ds/extension/archive/v1.2.4.tar.gz \
-#	&& git clone https://github.com/swoole/swoole-src.git \
+	&& git clone https://github.com/swoole/swoole-src.git \
 	&& tar -xzvf 3.1.3.tar.gz \
 	&& tar -xzvf v0.13.3.tar.gz \
-	&& tar -xzvf v4.0.0-beta.tar.gz \
+	# && tar -xzvf v4.0.0-beta.tar.gz \
 	&& tar -xzvf 2.0.0.tar.gz \
 	&& tar -xzvf v1.2.4.tar.gz \
 	&& cd /home/temp/hiredis-0.13.3 \
 	&& make -j && make install && ldconfig \
-	&& cd /home/temp/swoole-src-4.0.0-beta \
-#	&& cd /home/temp/swoole-src \
-#	&& git submodule update --init thirdparty/libco \
+	# && cd /home/temp/swoole-src-4.0.0-beta \
+	&& cd /home/temp/swoole-src \
+	# && git submodule update --init thirdparty/libco \
 	&& phpize && ./configure --enable-async-redis --enable-openssl && make \
 	&& make install \
 	&& cd /home/temp/phpredis-3.1.3 \
