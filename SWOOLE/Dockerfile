@@ -4,6 +4,20 @@ MAINTAINER Jincheng Zhang 896369042@qq.com link qiu mynameisql@gmail.com
 
 ENV SWOOLE_VERSION 4.0.1
 
+# 设置时区
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+	sh -c "echo 'Asia/Shanghai' > /etc/timezone" && \
+    dpkg-reconfigure -f noninteractive tzdata
+#更新apt-get源 使用163的源
+RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak && \
+    echo "deb http://mirrors.163.com/debian/ stretch main non-free contrib" >> /etc/apt/sources.list && \
+    echo "deb http://mirrors.163.com/debian/ stretch-updates main non-free contrib" >> /etc/apt/sources.list && \
+    echo "deb http://mirrors.163.com/debian/ stretch-backports main non-free contrib" >> /etc/apt/sources.list && \
+    echo "deb-src http://mirrors.163.com/debian/ stretch main non-free contrib" >> /etc/apt/sources.list && \
+    echo "deb-src http://mirrors.163.com/debian/ stretch-updates main non-free contrib" >> /etc/apt/sources.list && \
+    echo "deb-src http://mirrors.163.com/debian/ stretch-backports main non-free contrib" >> /etc/apt/sources.list && \
+    echo "deb http://mirrors.163.com/debian-security/ stretch/updates main non-free contrib" >> /etc/apt/sources.list && \
+    echo "deb-src http://mirrors.163.com/debian-security/ stretch/updates main non-free contrib" >> /etc/apt/sources.list
 # 构建swoole环境，在这里安装了php,swoole,composer
 RUN apt-get update && apt-get install -y \
 	zlib1g-dev \
@@ -69,4 +83,10 @@ RUN apt-get update && apt-get install -y \
 
 COPY ./config/* /usr/local/etc/php/conf.d/
 
-CMD ["bin/bash"]
+#set supervisor
+RUN mkdir -p /var/log/supervisor
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# CMD ["bin/bash"]
+#run supervisor
+CMD ["/usr/bin/supervisord"]
