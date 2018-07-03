@@ -4,6 +4,10 @@ MAINTAINER Jincheng Zhang 896369042@qq.com link qiu mynameisql@gmail.com
 
 ENV SWOOLE_VERSION 4.0.1
 
+# 设置时区
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+	sh -c "echo 'Asia/Shanghai' > /etc/timezone" && \
+    dpkg-reconfigure -f noninteractive tzdata
 # 构建swoole环境，在这里安装了php,swoole,composer
 RUN apt-get update && apt-get install -y \
 	zlib1g-dev \
@@ -21,6 +25,8 @@ RUN apt-get update && apt-get install -y \
 	libjpeg62-turbo-dev \
 	libmcrypt-dev \
 	libpng-dev \
+	libpcre3 \
+	libpcre3-dev\
 	--no-install-recommends \
 	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
 	&& docker-php-ext-install -j$(nproc) iconv mcrypt zip opcache bcmath pdo_mysql gd \
