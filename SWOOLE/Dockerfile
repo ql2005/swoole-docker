@@ -2,12 +2,11 @@
 FROM php:7.1-cli
 MAINTAINER Jincheng Zhang 896369042@qq.com link qiu mynameisql@gmail.com
 
-ENV SWOOLE_VERSION 4.0.1
+ENV SWOOLE_VERSION 4.0.4
 
 # 设置时区
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
-	sh -c "echo 'Asia/Shanghai' > /etc/timezone" && \
-    dpkg-reconfigure -f noninteractive tzdata
+	sh -c "echo 'Asia/Shanghai' > /etc/timezone"
 # 构建swoole环境，在这里安装了php,swoole,composer
 RUN apt-get update && apt-get install -y \
 	zlib1g-dev \
@@ -17,6 +16,8 @@ RUN apt-get update && apt-get install -y \
 	wget \
 	git \
 	make \
+	gdb \
+	valgrind \
 	procps \
 	iproute2 \
 	supervisor \
@@ -47,7 +48,7 @@ RUN apt-get update && apt-get install -y \
 	&& make -j && make install && ldconfig \
 	&& cd /home/temp/swoole-src-${SWOOLE_VERSION} \
 	# && cd /home/temp/swoole-src \
-	&& phpize && ./configure --enable-async-redis --enable-openssl && make \
+	&& phpize && ./configure --enable-async-redis --enable-openssl --enable-debug && make \
 	&& make install \
 	&& cd /home/temp/phpredis-3.1.3 \
 	&& phpize && ./configure \
