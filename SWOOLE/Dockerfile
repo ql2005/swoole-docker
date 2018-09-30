@@ -1,8 +1,8 @@
 # sd-swoole
 FROM php:7.1-cli
-MAINTAINER Jincheng Zhang 896369042@qq.com link qiu mynameisql@gmail.com
+MAINTAINER Jincheng Zhang 896369042@qq.com, Link Qiu mynameisql@gmail.com
 
-ENV SWOOLE_VERSION 4.0.4
+ENV SWOOLE_VERSION 4.2.2
 
 # 设置时区
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
@@ -48,7 +48,7 @@ RUN apt-get update && apt-get install -y \
 	&& make -j && make install && ldconfig \
 	&& cd /home/temp/swoole-src-${SWOOLE_VERSION} \
 	# && cd /home/temp/swoole-src \
-	&& phpize && ./configure --enable-async-redis --enable-openssl --enable-debug && make \
+	&& phpize && ./configure --enable-async-redis --enable-openssl && make \
 	&& make install \
 	&& cd /home/temp/phpredis-3.1.3 \
 	&& phpize && ./configure \
