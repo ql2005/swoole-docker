@@ -2,7 +2,7 @@
 FROM php:7.1-cli
 MAINTAINER Jincheng Zhang 896369042@qq.com, Link Qiu mynameisql@gmail.com
 
-ENV SWOOLE_VERSION 4.2.2
+ENV SWOOLE_VERSION 4.2.4
 
 # 设置时区
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
