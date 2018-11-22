@@ -1,5 +1,5 @@
 # sd-swoole
-FROM php:7.1-cli
+FROM php:7.1-cli-debug
 MAINTAINER Jincheng Zhang 896369042@qq.com, Link Qiu mynameisql@gmail.com
 
 ENV SWOOLE_VERSION 4.2.7
@@ -48,16 +48,16 @@ RUN apt-get update && apt-get install -y \
 	# && make -j && make install && ldconfig \
 	&& cd /home/temp/swoole-src-${SWOOLE_VERSION} \
 	# && cd /home/temp/swoole-src \
-	&& phpize && ./configure --enable-async-redis --enable-openssl && make \
+	&& phpize && ./configure --enable-async-redis --enable-openssl --enable-debug && make \
 	&& make install \
 	&& cd /home/temp/phpredis-3.1.3 \
-	&& phpize && ./configure \
+	&& phpize && ./configure --enable-debug \
 	&& make && make install \
 	&& cd /home/temp/php-inotify-2.0.0 \
-	&& phpize && ./configure \
+	&& phpize && ./configure --enable-debug \
 	&& make && make install \
 	&& cd /home/temp/ext-ds-1.2.4 \
-	&& phpize && ./configure \
+	&& phpize && ./configure --enable-debug \
 	&& make && make install \
 	&& cd /home/temp \
 	&& php -r"copy('https://getcomposer.org/installer','composer-setup.php');" \
