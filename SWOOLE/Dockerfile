@@ -2,11 +2,18 @@
 FROM php:7.1-cli
 MAINTAINER Jincheng Zhang 896369042@qq.com, Link Qiu mynameisql@gmail.com
 
-ENV SWOOLE_VERSION 4.2.7
+ENV SWOOLE_VERSION 4.2.10
 
 # 设置时区
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
 	sh -c "echo 'Asia/Shanghai' > /etc/timezone"
+#更新apt-get源 使用163的源
+RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak && \
+	echo "deb http://mirrors.163.com/debian/ stretch main non-free contrib" >/etc/apt/sources.list && \
+	echo "deb http://mirrors.163.com/debian/ stretch-proposed-updates main non-free contrib" >>/etc/apt/sources.list && \
+	echo "deb-src http://mirrors.163.com/debian/ stretch main non-free contrib" >>/etc/apt/sources.list && \
+	echo "deb-src http://mirrors.163.com/debian/ stretch-proposed-updates main non-free contrib" >>/etc/apt/sources.list
+
 # 构建swoole环境，在这里安装了php,swoole,composer
 RUN apt-get update && apt-get install -y \
 	zlib1g-dev \
