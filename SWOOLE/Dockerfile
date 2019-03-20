@@ -1,8 +1,8 @@
 # sd-swoole
-FROM php:7.1-cli-debug
+FROM php:7.1-cli
 MAINTAINER Jincheng Zhang 896369042@qq.com, Link Qiu mynameisql@gmail.com
 
-ENV SWOOLE_VERSION 4.2.7
+ENV SWOOLE_VERSION 4.2.9
 
 # 设置时区
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y \
 	valgrind \
 	procps \
 	iproute2 \
-	supervisor \
+	# supervisor \
 	libfreetype6-dev \
 	#libjpeg-dev \
 	libjpeg62-turbo-dev \
