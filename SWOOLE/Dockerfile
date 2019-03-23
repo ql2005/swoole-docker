@@ -5,11 +5,6 @@ MAINTAINER Link Qiu mynameisql@gmail.com
 ENV SWOOLE_VERSION=4.2.9 \
 	PHPIZE_DEPS="ca-certificates autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev zlib-dev wget curl tar xz unzip git"
 
-
-# 设置时区
-ARG timezone
-ENV TIMEZONE=${timezone:-"Asia/Shanghai"}
-
 # 构建swoole环境，在这里安装了php,swoole,composer
 RUN set -ex \
     # change apk source repo
@@ -19,6 +14,7 @@ RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libaio-dev openssl-dev \
 	&& apk add --no-cache \
     bash \
+    tzdata \
     libressl \
 	vim \
 	iproute2 \
@@ -57,6 +53,9 @@ RUN set -ex \
 	&& echo extension=mongodb.so>mongodb.ini \
 	&& echo extension=inotify.so>inotify.ini \
 	&& echo extension=swoole.so>swoole.ini \
+	# ---------- 设置时区 ------------
+	&& ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+	&& echo "Asia/Shanghai" > /etc/timezone \
 	# ---------- clear works ----------
 	&& rm -rf /home/temp \
 	&& apk del --purge *-dev \
