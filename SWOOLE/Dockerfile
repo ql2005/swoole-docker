@@ -1,9 +1,9 @@
 # sd-swoole
-FROM php:7.1-cli-alpine3.9
+FROM php:7.2-cli-alpine3.9
 MAINTAINER Link Qiu mynameisql@gmail.com
 
-ENV SWOOLE_VERSION=4.2.9 \
-	PHPIZE_DEPS="ca-certificates autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev zlib-dev wget curl tar xz unzip git"
+ENV SWOOLE_VERSION=4.3.1 \
+	PHPIZE_DEPS="ca-certificates autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev wget curl tar xz unzip git"
 
 # 构建swoole环境，在这里安装了php,swoole,composer
 RUN set -ex \
@@ -24,11 +24,14 @@ RUN set -ex \
 	libmcrypt \
 	libpng \
 	libpng-dev \
+	zlib-dev \
+	libzip-dev \
 	--no-install-recommends \
-    && pecl install mongodb \
+    && pecl install mongodb  \
+    && pecl install mcrypt-1.0.2 \
 	&& docker-php-ext-configure gd \
-	&& docker-php-ext-install -j$(nproc) iconv mcrypt zip opcache bcmath pdo_mysql gd \
-	&& docker-php-ext-enable gd \
+	&& docker-php-ext-install -j"$(nproc)" iconv zip opcache bcmath pdo_mysql gd \
+	&& docker-php-ext-enable gd mcrypt \
 	&& cd /home && rm -rf temp && mkdir temp && cd temp \
 	&& wget https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz \
 	https://github.com/phpredis/phpredis/archive/3.1.3.tar.gz \
@@ -39,7 +42,7 @@ RUN set -ex \
 	&& tar -xzvf 2.0.0.tar.gz \
 	&& cd /home/temp/swoole-src-${SWOOLE_VERSION} \
 	# && cd /home/temp/swoole-src \
-	&& phpize && ./configure --enable-async-redis --enable-openssl \
+	&& phpize && ./configure --enable-coroutine --enable-http2 \
 	&& make -j$(nproc) && make install \
 	&& cd /home/temp/phpredis-3.1.3 \
 	&& phpize && ./configure \
