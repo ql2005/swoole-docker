@@ -42,7 +42,7 @@ RUN set -ex \
 	&& tar -xzvf 2.0.0.tar.gz \
 	&& cd /home/temp/swoole-src-${SWOOLE_VERSION} \
 	# && cd /home/temp/swoole-src \
-	&& phpize && ./configure --enable-coroutine --enable-http2 \
+	&& phpize && ./configure --enable-coroutine --enable-http2 --enable-openssl \
 	&& make -j$(nproc) && make install \
 	&& cd /home/temp/phpredis-3.1.3 \
 	&& phpize && ./configure \
