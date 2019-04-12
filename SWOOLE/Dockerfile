@@ -61,8 +61,11 @@ RUN set -ex \
 	&& echo extension=redis.so>redis.ini \
 	&& echo extension=inotify.so>inotify.ini \
 	&& echo extension=mongodb.so>mongodb.ini \
-	&& echo extension=tideways.so>tideways.ini \
+	&& echo extension=tideways_xhprof.so>tideways_xhprof.ini \
 	&& echo extension=swoole.so>swoole.ini \
+	# ---------- 设置时区 ------------
+	&& ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+	&& echo "Asia/Shanghai" > /etc/timezone \
 	# ---------- clear works ----------
 	&& rm -rf /home/temp \
 	&& apk del --purge *-dev \
