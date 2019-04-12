@@ -3,32 +3,27 @@ FROM php:7.1-cli-alpine3.9
 MAINTAINER Link Qiu mynameisql@gmail.com
 
 ENV SWOOLE_VERSION=4.2.9 \
-	PHPIZE_DEPS="ca-certificates autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev zlib-dev wget curl tar xz unzip git"
+	PHPIZE_DEPS="ca-certificates autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev zlib-dev wget curl tar xz unzip git libjpeg-turbo-dev libwebp-dev libmcrypt-dev libmcrypt libpng libpng-dev"
 
-
-# 设置时区
-ARG timezone
-ENV TIMEZONE=${timezone:-"Asia/Shanghai"}
-
-
-# 构建swoole环境
+# 构建swoole环境，在这里安装了php,swoole,composer
 RUN set -ex \
     # change apk source repo
     && sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/' /etc/apk/repositories \
     && apk update \
-    && apk add --no-cache libstdc++ openssl \
+    && apk add --no-cache libstdc++ zlib openssl \
 	&& apk add --no-cache --virtual .build-deps $PHPIZE_DEPS libaio-dev openssl-dev \
 	&& apk add --no-cache \
     bash \
+    tzdata \
     libressl \
 	vim \
 	iproute2 \
-	libjpeg-turbo-dev \
-	libwebp-dev \
-	libmcrypt-dev \
-	libmcrypt \
-	libpng \
-	libpng-dev \
+	# libjpeg-turbo-dev \
+	# libwebp-dev \
+	# libmcrypt-dev \
+	# libmcrypt \
+	# libpng \
+	# libpng-dev \
 	--no-install-recommends \
     && pecl install mongodb \
 	&& docker-php-ext-configure gd \
@@ -38,7 +33,6 @@ RUN set -ex \
 	&& wget https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz \
 	https://github.com/phpredis/phpredis/archive/3.1.3.tar.gz \
 	https://github.com/arnaud-lb/php-inotify/archive/2.0.0.tar.gz \
-	# https://github.com/mongodb/mongo-php-driver-legacy/archive/1.6.16.tar.gz \
 	https://github.com/tideways/php-xhprof-extension/archive/v4.1.7.tar.gz \
 	# && git clone https://github.com/swoole/swoole-src.git \
 	&& tar -xzvf 3.1.3.tar.gz \
