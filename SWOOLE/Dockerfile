@@ -36,6 +36,7 @@ RUN set -ex \
 	&& wget https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz \
 	https://github.com/phpredis/phpredis/archive/3.1.3.tar.gz \
 	https://github.com/arnaud-lb/php-inotify/archive/2.0.0.tar.gz \
+	&& git clone https://github.com/shenzhe/php-xhprof-extension.git \
 	# && git clone https://github.com/swoole/swoole-src.git \
 	&& tar -xzvf 3.1.3.tar.gz \
 	&& tar -xzvf v${SWOOLE_VERSION}.tar.gz \
@@ -50,12 +51,15 @@ RUN set -ex \
 	&& cd /home/temp/php-inotify-2.0.0 \
 	&& phpize && ./configure \
 	&& make && make install \
-	&& cd /home/temp \
+	&& cd /home/temp/php-xhprof-extension \
+	&& phpize && ./configure \
+	&& make && make install \
 	&& cd /usr/local/etc/php/conf.d/ \
 	&& echo extension=redis.so>redis.ini \
 	&& echo extension=mongodb.so>mongodb.ini \
 	&& echo extension=inotify.so>inotify.ini \
 	&& echo extension=swoole.so>swoole.ini \
+	&& echo extension=tideways_xhprof.so>tideways_xhprof.ini \
 	# ---------- 设置时区 ------------
 	&& ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
 	&& echo "Asia/Shanghai" > /etc/timezone \
