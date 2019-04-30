@@ -1,0 +1,6 @@
+# sd-swoole-debug
+FROM sd3-swoole:4.3.2
+MAINTAINER Link Qiu mynameisql@gmail.com
+
+RUN set -ex \
+    && apk add strace gdb lsof
