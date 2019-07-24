@@ -2,7 +2,7 @@
 FROM php:7.2-cli-alpine3.9
 MAINTAINER Link Qiu mynameisql@gmail.com
 
-ENV SWOOLE_VERSION=4.3.2 \
+ENV SWOOLE_VERSION=4.4.1 \
 	PHPIZE_DEPS="ca-certificates autoconf dpkg-dev dpkg file g++ gcc libc-dev make php7-dev php7-pear pkgconf re2c pcre-dev wget curl tar xz unzip git"
 
 # 构建swoole环境，在这里安装了php,swoole,composer
